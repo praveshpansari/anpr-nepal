@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+<div class="row justify-content-md-between my-4 pt-4">
+    <h5 class='text-secondary mt-2 col-auto'>Prediction {% if prediction %}is Completed{% else %} failed{% endif%}</h5>
+    <a class="btn btn-dark col-auto" style="width:100px" href="../">Back</a>
+</div>
+
+
+<div class="row mt-2 justify-content-center">
+    <div class="thumbnail">
+       
+    </div>
+</div>
+
+
+
+{% endblock %}

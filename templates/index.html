@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- Starts form section -->
+
+<div class="form-container center-align" style="display: flex;align-items:center;justify-content:center;padding-top:0">
+    <div class="content2" style="padding-top:0">
+        {% if prediction and prediction['number'] %}
+        <img src="{{url_for('static', filename='images/temp.jpg')}}" height="400" class="img-thumbnail" />
+        <div class="justify-content-md-center">
+            <h6 class="mb-3">We got the following info from the image:</h6>
+            <ul style="list-style-type: none;font-family:Calibri;font-size:15px">
+                <li><b style="font-size:16px">Number Plate - </b><span
+                        style="text-transform: uppercase;"><b>{{prediction['number']}}</b></span>
+                </li>
+                <li><b style="font-size:16px">Color - </b><span
+                        style="text-transform: uppercase;">{{prediction['color']}}</span>
+                    <span style="width: 18px;height: 18px;margin-left: 5px;background:{{prediction['hex']}}"></span>
+                </li>
+                <li><b style="font-size:16px">Vehicle Service/Owner Type - </b><span>{{prediction['vtype']}}
+                    </span></li>
+                <!-- <li><b style="font-size:16px">Orientation - </b><span>{{prediction['orientation']}}
+                    </span></li> -->
+            </ul>
+            <i><sup>*</sup>Confidence Score: <b>{{prediction['confidence']}}</b></i><br>
+            <i><sup>*</sup>Time taken for number prediction was <b>{{prediction['predict_time']}}s</b></i><br>
+            <i>Time taken for color prediction was <b>{{prediction['color_time']}}s</b></i><br>
+            <a class="btn waves-effect waves-light"
+                style="color: #EEFCFF;background:#1E41C9;font-weight:500;text-transform:none;border-radius:8px;padding:0.2rem 2rem;height:auto;margin-top:1em"
+                href="../">Back</a>
+        </div>
+        {% elif prediction %}
+        <div class="row mt-4 justify-content-md-center">
+            <h6>Unfortunately, we could not recognize any characters in the image.</h6>
+        </div>
+
+        <form enctype="multipart/form-data" action="/predict/" method="post">
+            <div class="row" style="display: flex;justify-content:center;gap:0rem 2rem;align-items:center">
+                <div class="file-field input-field">
+                    <div style="background: #EEFCFF;color:#1E41C9;text-transform:none;border-radius:8px;padding:0.25rem 2rem;height:auto"
+                        class="btn">
+                        <span>Upload </span>
+
+                        <input type="file" required name="image" id="image"
+                            onchange="console.log(event);document.getElementById('xtr').src = window.URL.createObjectURL(event.target.files[0]);document.getElementById('error').innerHTML = ''">
+                    </div>
+                    <div class="file-path-wrapper" style="display: none;">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
+                <button type="submit" class="btn waves-effect waves-light"
+                    style="color: #EEFCFF;background:#1E41C9;font-weight:500;text-transform:none;border-radius:8px;padding:0.6rem 2rem;height:auto">Predict</button>
+
+            </div>
+
+
+        </form>
+        {% else %}
+
+        {% if err %}
+        <div class="red-text" style="font-family:'Trebuchet MS', sans-serif;font-size:1.1rem" mt-3" role="alert">
+            <b id='error'>{{err}}</b>
+        </div>
+        <img id='xtr' height="400" src="{{url_for('static',filename='images/vehicle.jpg')}}"
+            style="margin-top:1.5rem;margin-bottom: 1.5rem;">
+        {% else %}
+        <img id='xtr' height="400" src="{{url_for('static',filename='images/holder.svg')}}" style="margin-top:0rem;margin-bottom:5rem;">
+        {% endif %}
+
+
+        <form enctype="multipart/form-data" action="/predict/" method="post">
+            <div class="row" style="display: flex;justify-content:center;gap:0rem 2rem;align-items:center">
+                <div class="file-field input-field">
+                    <div style="background: #EEFCFF;color:#1E41C9;text-transform:none;border-radius:8px;padding:0.25rem 2rem;height:auto"
+                        class="btn">
+                        <span>Upload </span>
+
+                        <input type="file" required name="image" id="image"
+                            onchange="console.log(event);document.getElementById('xtr').src = window.URL.createObjectURL(event.target.files[0]);document.getElementById('error').innerHTML = ''">
+                    </div>
+                    <div class="file-path-wrapper" style="display: none;">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
+                <button type="submit" class="btn waves-effect waves-light"
+                    style="color: #EEFCFF;background:#1E41C9;font-weight:500;text-transform:none;border-radius:8px;padding:0.6rem 2rem;height:auto">Predict</button>
+
+            </div>
+
+
+        </form>
+
+
+
+        {% endif%}
+
+    </div>
+
+    <!-- Ends form section -->
+</div>
+{% endblock %}
+
+{% block about %}
+<div class="container">
+    <h2 class="center-align"><b>About</b></h2>
+    <div style="display:flex;margin-top:5rem;justify-content:space-between;">
+        <div style="flex-basis: 40%;" class="image_holder center-align">
+            <img src="{{url_for('static', filename='images/car_search.png')}}">
+        </div>
+        <p style="color:#24285D;justify-self:end;flex-basis: 50%;max-width:50%;text-align:justify;font-size:1.15em">
+            This project aims to detect and recognize Nepali license plate from an image. Such systems have been
+            successfully implemented in many countries around the world. They are used for various law enforcement
+            purposes
+            like robbery, lost vehicles, criminal chases and vehicles legality. Furthermore, they can be used in
+            automted
+            toll booths and parking areas. Automated license plate reader (ALPRs) systems combine high-speed cameras and
+            sophisticated software to capture and convert license plate images into data that can be compared with
+            information in other databases.License plate reader systems can collect a driver’s geographic location,
+            along with the date and time a vehicle was in a particular place.
+        </p>
+    </div>
+    <h4 style="color: #717C8A;margin-top:4rem;margin-bottom:3rem">How it works</h4>
+    <p>
+    <ul
+        style="color:darkblue;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:1.25em">
+        <li style="padding-top:0.25rem;padding-bottom:0.25rem">The license plate is localized on a vehicle image using
+            CNN. In this project, YOLOv3 a state-of-the-art object detection is used</li>
+        <li style="padding-top:0.25rem;padding-bottom:0.25rem">The cropped image is the preprocessed to remove noise,
+            fix distortions and eliminate image arifacts</li>
+        <li style="padding-top:0.25rem;padding-bottom:0.25rem">Individual characters are segmented using horizontal and
+            vertical projection</li>
+        <li style="padding-top:0.25rem;padding-bottom:0.25rem">Each character is then recognized using an Optical
+            Character Recognition(OCR) engine which is a trained CNN model to predict characters</li>
+    </ul>
+    </p>
+    <h5>Note</h5>
+    <p>
+    <ul>
+        <li><sup>*</sup> - The confidence value is for the localization of the plate on the image</li>
+        <li><sup>**</sup> - The predicition time does not include plate localization time.</li>
+    </ul>
+    </p>
+</div>
+{% endblock %}
+
+{% block github %}
+<div class="none">
+    <h3 class="center-align" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:lighter">
+        Technologies Used</h3>
+    <div style="display:flex;margin-top:8rem;justify-content:space-between;height:128px"
+        class="image_holder center-align">
+        <a style="flex:1 0 16%" href="https://opencv.org" target="_blank">
+            <img style="width:auto;height:100%" src="{{url_for('static', filename='images/opencv.png')}}">
+        </a>
+        <a style="flex:1 0 16%" href="https://flask.palletsprojects.com/" target="_blank">
+            <img style="width:auto;height:100%" src="{{url_for('static', filename='images/flask.png')}}">
+        </a>
+        <a style="flex:1 0 16%" href="https://scikit-learn.org" target="_blank">
+            <img style="width:auto;height:100%" src="{{url_for('static', filename='images/scikit-learn-logo.png')}}">
+        </a>
+        <a style="flex:1 0 16%" href="https://github.com/praveshpansari/anpr-nepal" target="_blank">
+            <img style="width:auto;height:100%"
+                src="{{url_for('static', filename='images/GitHub-Mark-120px-plus.png')}}">
+        </a>
+        <a style="flex:1 0 16%" href="https://tensorflow.org" target="_blank">
+            <img style="width:auto;height:100%" src="{{url_for('static', filename='images/TF_FullColor_Stacked.png')}}">
+        </a>
+        <a style="flex:1 0 16%" href="https://pjreddie.com/darknet/yolo/" target="_blank">
+            <img style="width:auto;height:100%" src="{{url_for('static', filename='images/yolo.png')}}">
+        </a>
+    </div>
+</div>
+
+{% endblock %}
